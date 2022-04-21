@@ -4,7 +4,7 @@ import styled from 'styled-components';
 export const Container = styled.div`
 
   background: var(--white);
-  height: 6.5rem;
+  height: 5rem;
 
   display: flex;
   align-items: center;
@@ -20,16 +20,13 @@ export const Container = styled.div`
   
   .textfield {
     flex:1;
-    margin-left: 45%;
+    margin-left: 35%;
     margin-right: 1%;
   }
 
   span {
-    display:block;
-    margin-left: auto;
     text-transform: capitalize;
-    font-size: 20px;
-    padding: 0.5rem;
+    font-size: 18px;
   }
     
   

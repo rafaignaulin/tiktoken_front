@@ -12,7 +12,7 @@ interface Props {
     };
 }
 
-const Header = ({title, user}:Props) => {
+export const Header = ({title, user}:Props) => {
 
     return (
         <Container>
@@ -29,5 +29,3 @@ const Header = ({title, user}:Props) => {
 
 }
 
-
-export default Header

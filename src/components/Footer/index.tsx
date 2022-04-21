@@ -7,7 +7,7 @@ export const Footer = () => {
     return (
         <>
             <Container>
-                <div className="contato">
+                <div>
                     <span>Informações</span>
                     <span>Contato</span>
                     

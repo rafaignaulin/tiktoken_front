@@ -7,21 +7,17 @@ export const Container = styled.div`
   height: 4rem;
 
   display: flex;
-  flex-direction:row;
   align-items: center;
   padding 2rem 4rem;
 
-  border-top: 1px solid var(--gray-100);
+  border-top: 1px solid var(--gray-200);
   
   h2 {
-      font-size: 1rem;
+      
+    font-size: 1rem;
     margin-left: 2rem;
     padding: 0.25rem 0 0.25rem 2rem;
-    border-left: 1px solid var(--gray-100);
-  }
-  
-  .contato{
-      flex-direction:column;
+    border-left: 1px solid var(--gray-500);
   }
 
   span {
