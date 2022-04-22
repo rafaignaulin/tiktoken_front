@@ -4,6 +4,7 @@ import Link from 'next/link';
 import { Event } from '@dtos/IEventDTO';
 
 import * as styles from './styles';
+import Head from 'next/head';
 
 export const events:Event[] = [{
     id: '1',
@@ -60,6 +61,9 @@ const dashboardPage: NextPage = () => {
     
     return (
         <>
+            <Head>
+                <title>Home | Tiktoken</title>
+            </Head>
 
             <styles.Events>
                 <h1> Trending events</h1>

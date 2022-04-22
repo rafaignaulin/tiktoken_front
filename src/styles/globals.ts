@@ -24,6 +24,18 @@ export const GlobalStyle = createGlobalStyle`
     --purple-500: #8257E5;
     --purple-800: #6F48C9;
   }
+
+  @media(max-width:1080px) {
+    html {
+        font-size: 93.75%;
+    }
+  }
+
+  @media(max-width:720px) {
+    html {
+        font-size: 87.5%;
+    }
+  }
   
   body {
     background: var(--gray-50);
