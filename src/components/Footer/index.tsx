@@ -1,21 +1,16 @@
-import { Container } from "./styles"
+import { Container } from './styles';
 
+export function Footer() {
+  return (
+    <Container>
+      <div>
+        <span>Informações</span>
+        <span>Contato</span>
 
-
-export const Footer = () => {
-
-    return (
-        <>
-            <Container>
-                <div>
-                    <span>Informações</span>
-                    <span>Contato</span>
-                    
-                </div>
-                <div>
-                    <h2>Feito com 💗 - Equipe Tiktoken.</h2>
-                </div>
-            </Container>
-        </>
-    )
+      </div>
+      <div>
+        <h2>Feito com 💗 - Equipe Tiktoken.</h2>
+      </div>
+    </Container>
+  );
 }

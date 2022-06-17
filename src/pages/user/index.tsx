@@ -1,22 +1,21 @@
-import { NextPage } from "next";
-import * as styles from "./styles";
+import { NextPage } from 'next';
 
 import Button from '@atlaskit/button';
-import Image from "next/image";
+import Image from 'next/image';
 
-import { ButtonItem, MenuGroup, Section } from "@atlaskit/menu";
-import { useDispatch, useSelector } from "react-redux";
-import * as userActions from '../../store/User/user.action'
+import { ButtonItem, MenuGroup, Section } from '@atlaskit/menu';
+import { useDispatch, useSelector } from 'react-redux';
+import * as styles from './styles';
+import * as userActions from '../../store/User/user.action';
 
-const userPage: NextPage = () => {
-  // const user = useSelector(state => state.UserReducer)
-  // const dispatch = useDispatch()
+const userPage: NextPage = () =>
+// const user = useSelector(state => state.UserReducer)
+// const dispatch = useDispatch()
 
   // const handleChangeName = () => {
   //   dispatch(userActions.setUser({name}))
   // }
-
-  return (
+  (
 
     <styles.Principal>
 
@@ -33,8 +32,8 @@ const userPage: NextPage = () => {
         <styles.ConfigUser>
 
           <styles.UserInfo>
-          <Image src='/assets/avatars/147142.png' width='72px' height='72px' alt='Rafael Ignaulin'/>
-          <h3>Rafael Ignaulin</h3>
+            <Image src="/assets/avatars/147142.png" width="72px" height="72px" alt="Rafael Ignaulin" />
+            <h3>Rafael Ignaulin</h3>
           </styles.UserInfo>
 
           <styles.Box>
@@ -42,13 +41,13 @@ const userPage: NextPage = () => {
             <styles.Field>
               <h3>Nome de usuário</h3>
               <span>Rafael</span>
-              <Button appearance="subtle"></Button>
+              <Button appearance="subtle" />
             </styles.Field>
 
             <styles.Field>
               <h3>Email</h3>
               <span>rafa@rafa.com</span>
-              <Button appearance="subtle"></Button>
+              <Button appearance="subtle" />
             </styles.Field>
 
             <styles.Field>
@@ -63,9 +62,7 @@ const userPage: NextPage = () => {
         </styles.ConfigUser>
 
       </styles.Configurations>
-      
-    </styles.Principal>
-  )
-};
 
+    </styles.Principal>
+  );
 export default userPage;

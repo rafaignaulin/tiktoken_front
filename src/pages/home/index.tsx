@@ -1,105 +1,122 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 
-import { Event } from '@dtos/IEventDTO';
-
-import * as styles from './styles';
 import Head from 'next/head';
+import EventCard from '@components/EventCard';
+import * as styles from './styles';
+import { api } from '@api/index';
+import { Title } from '@components/Title/styles';
 
-export const events:Event[] = [{
-    id: '1',
-    name: 'Saidera daora no altas - OPEN BAR',
-    local: {
-        city: 'Chapeco',
-        uf: 'SC'
-    },
-    description: 'Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!',
-    thumbnail: '/assets/pty.png',
-    eventDate: '2022-04-04'
-},
-{
-    id: '1',
-    name: 'Saidera daora no altas- OPEN BAR',
-    description:  'Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!',
-    local: {
-        city: 'Chapeco',
-        uf: 'SC'
-    },
-    thumbnail: '/assets/pty_large.png',
-    eventDate: '2022-04-31'
-},
-{
-    id: '1',
-    name: 'Saidera daora no altas- OPEN BAR',
-    description: 'Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!',
-    local: {
-        city: 'Chapeco',
-        uf: 'SC'
-    },
-    thumbnail: '/assets/pty_large.png',
-    eventDate: '2022-05-23'
-},
-{
-    id: '1',
-    name: 'Saidera daora no altas- OPEN BAR',
-    description: 'Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!',
-    local: {
-        city: 'Chapeco',
-        uf: 'SC'
-    },
-    thumbnail: '/assets/pty.png',
-    eventDate: '2022-06-07'
-},
-];
+import AwesomeSlider from 'react-awesome-slider';
+import 'react-awesome-slider/dist/styles.css';
+ 
 
-const dashboardPage: NextPage = () => {
-    const user = { 
-        name: 'Rafael',
-        avatar_url: '/assets/avatars/147142.png'
+interface Event {
+    id: string;
+    name: string;
+    description: string;
+    local: {
+        city: string;
+        uf: string;
     }
-
-    
-    return (
-        <>
-            <Head>
-                <title>Home | Tiktoken</title>
-            </Head>
-
-            <styles.Events>
-                <h1> Trending events</h1>
-
-                <styles.TrendingEvents>
-                    <ul>
-                    {events.map((event, index) => {
-                        return (
-                            <li key={event.id}>
-
-                                <img src={event.thumbnail} alt={event.name} />
-                                <Link  href={`/events/${event.id}`}>
-                                    <a>{event.name}</a>
-                                </Link>
-
-                                <styles.EventDetails>
-                                    <div>
-                                        <p>{event.description}</p>
-                                        <span>{event.local.city} - {event.local.uf}</span>
-                                    </div>
-
-                                    <styles.DateBox>
-                                        <strong>{event.eventDate?.split('-')[2]}</strong>
-                                        <strong>{event.eventDate?.split('-')[1]}</strong>
-                                        <span>{event.eventDate?.split('-')[0]}</span>
-                                    </styles.DateBox>
-
-                                </styles.EventDetails>
-                            </li>
-                        )
-                    })}
-                    </ul>
-                </styles.TrendingEvents>
-            </styles.Events>
-        </> 
-)
-
+    thumbnail: string;
+    eventDate: string;
+    createdAt: string;
+    updatedAt:string;
 }
-export default dashboardPage
+
+interface HomeProps {
+    featuredEvents: Event[];
+    allEvents: Event[];
+  }
+
+const dashboardPage = ({featuredEvents, allEvents}:HomeProps) => {
+  const user = {
+    name: 'Rafael',
+    avatar_url: '/assets/avatars/147142.png',
+  };
+  console.log(featuredEvents)
+  const events = [...featuredEvents, ...allEvents]
+  console.log(events)
+  return (
+    <>
+      <Head>
+        <title>Home | Tiktoken</title>
+      </Head>
+
+      <styles.Events>
+        <title> Featured Events</title>
+
+        <styles.FeaturedEvents>
+
+        <title> All Events</title>
+            <AwesomeSlider>
+            {events.map((event, index) => (
+                <div>
+                    <span>{event.id}</span>
+                    <span>{event.name}</span>
+                    <span>{event.thumbnail}</span>
+                    <span>{event.description}</span>
+                    <span>{event.local.city}{event.local.uf}</span>
+                    <span>{event.eventDate}</span>
+                </div>
+                        ))}
+            </AwesomeSlider>
+
+        </styles.FeaturedEvents>
+        <styles.AllEvents>
+          <ul>
+            {events.map((event, index) => (
+              <EventCard id={event.id}
+                        name={event.name} 
+                        description={event.description}
+                        thumbnail={event.thumbnail}
+                        local={event.local}
+                        eventDate={event.eventDate}
+                        />
+            ))}
+          </ul>
+        </styles.AllEvents>
+      </styles.Events>
+    </>
+  );
+};
+
+export const getStaticProps: GetStaticProps = async () => {
+    const { data } = await api.get('events', {
+      params: {
+        _limit: 12,
+        _sort: 'published_at',
+        _order: 'desc'
+      }
+    });
+    const eventData:Event[] = data;
+    const events = eventData.map(event => {
+      return {
+        id: event.id,
+        name: event.name,
+        thumbnail: event.thumbnail,
+        description: event.description,
+        local: {
+            city: event.local.city,
+            uf: event.local.uf
+        },
+        eventDate: event.eventDate,
+        createdAt: event.createdAt,
+        updatedAt: event.updatedAt
+      };
+    })
+  
+    const featuredEvents = events.slice(0, 2);
+    const allEvents = events.slice(2, events.length);
+    return {
+      props:  {
+        featuredEvents,
+        allEvents,
+      },
+      revalidate: 60 * 60 * 8, 
+    }
+  }
+
+
+export default dashboardPage;

@@ -14,7 +14,7 @@ export const Events = styled.div`
     }
 
     `;
-export const TrendingEvents = styled.div`
+export const AllEvents = styled.div`
     ul{
         margin: 1rem 5rem;
         list-style: none;
@@ -54,7 +54,47 @@ export const TrendingEvents = styled.div`
     }
 `;
 
-export const EventDetails = styled.div `
+export const FeaturedEvents = styled.div`
+    ul{
+        margin: 1rem 5rem;
+        list-style: none;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 1.5rem;
+    }
+
+    li{
+        background: var(--white);
+        border: 1px solid var(--gray-100);
+
+        border-radius: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        
+        img {
+            object-fit: auto;
+            max-width: 100%;
+            height: 50%;
+            border-radius:1rem;
+            radius:1.5rem;
+            padding:0.2rem;
+        }
+        a{  
+            margin: 2rem 0 0 2rem;
+            color: var(--gray-600);
+            font-family: Lexend, sans-serif;
+            font-weight: 600;
+            font-size: 1.5rem;
+            text-decoration: none;
+            &:hover{
+            text-decoration: underline;
+            }
+        }
+        }
+    }
+`;
+
+export const EventDetails = styled.div`
     flex:1;
     display:flex;
     align-items: center;
@@ -76,13 +116,13 @@ export const EventDetails = styled.div `
         display: inline-block;
         margin-top: 0.875rem;
         font-size: 1rem;
-        margin-right: rem;  
+        margin-right: 1rem;  
     }
 
     `;
 export const DateBox = styled.div`
     width:6rem;
-    height:6rem;
+    height:7rem;
 
     display: flex;
     flex-direction: column;
@@ -105,7 +145,7 @@ export const DateBox = styled.div`
     }
 
     span {
-        margin-top: 0.5rem;
+        margin-left: 1rem;
         font-size: 1rem;
         color: var(--gray-500);
     }
