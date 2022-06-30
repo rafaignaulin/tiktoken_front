@@ -24,7 +24,8 @@
     "react-awesome-slider": "^4.1.0",
     "react-dom": "18.0.0",
     "react-redux": "^8.0.1",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "zod": "^3.17.3"
   },
   "devDependencies": {
     "@types/node": "17.0.23",
