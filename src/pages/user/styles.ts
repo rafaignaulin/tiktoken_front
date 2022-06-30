@@ -1,81 +1,79 @@
-import styled from 'styled-components';
-import { MenuGroup } from '@atlaskit/menu';
+import { MenuGroup } from "@atlaskit/menu";
+import styled from "styled-components";
 
 export const Menu = styled(MenuGroup)`
-    background-color: var(--gray-50);
-    border-radius: 1rem;
-    margin: 1rem;
-    Section{
-        ButtonItem{
-            font-size:5rem;
-        }
+  background-color: var(--gray-50);
+  border-radius: 1rem;
+  margin: 1rem;
+  Section {
+    ButtonItem {
+      font-size: 5rem;
     }
+  }
 `;
 
 export const Principal = styled.div`
-    
-    background-color:var(--gray-100);
-    margin: 3rem;
-    border-radius: 1rem;
-    display: flex;
-    align-items:center;
-    height: 100%;
-    `;
+  background-color: var(--gray-100);
+  margin: 3rem;
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  height: 100%;
+`;
 
 export const Configurations = styled.div`
-    width:90%;
+  width: 90%;
 
-    background-color: var(--white);
-    margin: 1rem;
+  background-color: var(--white);
+  margin: 1rem;
+  padding: 1rem;
+  border-radius: 1rem;
+
+  h2 {
     padding: 1rem;
-    border-radius:1rem;
-
-    h2{
-        padding: 1rem;
-        border-bottom: 1px solid var(--gray-100)
-    }
-    
-    `;
+    border-bottom: 1px solid var(--gray-100);
+  }
+`;
 export const ConfigUser = styled.div`
-    background-color: var(--gray-100);
-    width: 70%;
-    margin: 2rem;
-    padding:1rem;
-    
-    border-radius:1rem;
+  background-color: var(--gray-100);
+  width: 70%;
+  margin: 2rem;
+  padding: 1rem;
 
-    `;
+  border-radius: 1rem;
+`;
 export const UserInfo = styled.div`
-    margin: 0 0 0 2rem ;
-        display: flex;
-        align-items:center;
-        h3 {
-            margin-left: 2rem;
-        }
-    `;
+  margin: 0 0 0 2rem;
+  display: flex;
+  align-items: center;
+  h3 {
+    margin-left: 2rem;
+  }
+`;
 export const Box = styled.div`
-        display:flex;
-        flex-direction:column;
+  display: flex;
+  flex-direction: column;
 
-        background-color: var(--gray-50);
-        margin: 1rem;
-        padding:1rem;
+  background-color: var(--gray-50);
+  margin: 1rem;
+  padding: 1rem;
 
-        h3, span {
-            padding: 0 0 1rem 1rem;
-        }
+  h3,
+  span {
+    padding: 0 0 1rem 1rem;
+  }
 
-        border-radius:1rem;
-    `;
+  border-radius: 1rem;
+`;
 
 export const Field = styled.div`
-        display:flex;
-        flex-direction: column;
-        position:relative;
-        Button{
-            position: absolute;
-            width: 100%;
-            height: 4rem;
-            border-radius: 0.5rem;
-        }
-        `;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  Button {
+    position: absolute;
+    width: 100%;
+    height: 4rem;
+    border-radius: 0.5rem;
+  }
+`;

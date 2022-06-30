@@ -1,4 +1,4 @@
-import { Container } from './styles';
+import { Container } from "./styles";
 
 export function Footer() {
   return (
@@ -6,7 +6,6 @@ export function Footer() {
       <div>
         <span>Informações</span>
         <span>Contato</span>
-
       </div>
       <div>
         <h2>Feito com 💗 - Equipe Tiktoken.</h2>

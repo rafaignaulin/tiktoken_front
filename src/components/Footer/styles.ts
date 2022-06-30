@@ -1,4 +1,4 @@
-import styled from 'styled-components';
+import styled from "styled-components";
 
 export const Container = styled.div`
   background: var(--gray-100);
@@ -7,9 +7,8 @@ export const Container = styled.div`
   align-items: center;
   padding: 0 2rem;
   border-top: 1px solid var(--gray-200);
-  
+
   h2 {
-      
     font-size: 1rem;
     margin-left: 2rem;
     padding: 0.25rem 0 0.25rem 2rem;
@@ -21,6 +20,4 @@ export const Container = styled.div`
     font-size: 1rem;
     padding: 0.5rem;
   }
-    
-  
 `;
