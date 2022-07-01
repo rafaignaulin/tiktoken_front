@@ -14,12 +14,10 @@ function MyApp({ Component, pageProps }: AppProps) {
 
   return (
     <Provider store={store}>
-      <Header title="TikToken" />
 
       <Component {...pageProps} />
       <GlobalStyle />
 
-      <Footer />
     </Provider>
   );
 }

@@ -1,9 +1,9 @@
 import EventCard from "@components/EventCard";
 import Head from "next/head";
-import * as styles from "./styles";
-
 import AwesomeSlider from "react-awesome-slider";
 import "react-awesome-slider/dist/styles.css";
+import * as styles from "./styles";
+
 
 interface Event {
   id: string;
@@ -30,7 +30,7 @@ const dashboardPage = ({ featuredEvents, allEvents }: HomeProps) => {
     avatar_url: "/assets/avatars/147142.png"
   };
   console.log(featuredEvents);
-  const events = [...featuredEvents, ...allEvents];
+  const events = [];
   console.log(events);
   return (
     <>
