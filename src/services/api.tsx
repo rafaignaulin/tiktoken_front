@@ -1,11 +1,12 @@
-import {
+import type {
   AuthenticateUser,
   BuyRequest,
   BuyTicket,
   CreateUser,
   FormCreateEvent,
-  Paginate
-} from "@types";
+  Paginate,
+  SearchEvent
+} from "@type/schemas";
 import axios from "axios";
 
 const baseUrl = "http://localhost:8080/";
@@ -14,8 +15,8 @@ export const api = {
   createUser: (body: CreateUser) => axios.post(baseUrl + "user/create", body),
   authenticateUser: (body: AuthenticateUser) =>
     axios.post(baseUrl + "user/authenticate", body),
-  findAllEvents: (params: Paginate) =>
-    axios.get(baseUrl + "event/", { params }),
+  findAllEvents: ({ params, body }: { params?: Paginate; body?: any }) =>
+    axios.post<SearchEvent[]>(baseUrl + "event/search/", { params, ...body }),
   createEvent: (body: FormCreateEvent) =>
     axios.post(baseUrl + "event/create", body),
   findAllTicketsByEvent: (eventId) => axios.get(baseUrl + "ticket/" + eventId),

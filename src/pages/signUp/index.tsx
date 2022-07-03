@@ -3,8 +3,6 @@ import { Fragment, useState } from "react";
 import ButtonGroup from "@atlaskit/button/button-group";
 import LoadingButton from "@atlaskit/button/loading-button";
 import Button from "@atlaskit/button/standard-button";
-import TextField from "@atlaskit/textfield";
-
 import Form, {
   ErrorMessage,
   Field,
@@ -14,7 +12,8 @@ import Form, {
   HelperMessage,
   ValidMessage
 } from "@atlaskit/form";
-import { api } from "@services/api";
+import TextField from "@atlaskit/textfield";
+import { trpc } from "@utils/trpc";
 
 interface SignUpFormData {
   name: string;
@@ -24,6 +23,9 @@ interface SignUpFormData {
 
 const FormDefaultExample = () => {
   const [apiError, setApiError] = useState(null);
+  const userMutation = trpc.useMutation("user.create");
+
+  console.log("*** userMutation", userMutation.status, userMutation.data);
 
   return (
     <div
@@ -37,16 +39,18 @@ const FormDefaultExample = () => {
     >
       <Form<SignUpFormData>
         onSubmit={async (data) => {
-          console.log("form data", data);
-          try {
-            await api.post("/user/create", data);
-          } catch (err: any) {
-            setApiError(err.response.data);
-          }
+          console.log("*** data", data);
+          userMutation.mutate(data);
 
-          return new Promise((resolve) => setTimeout(resolve, 2000)).then(() =>
-            data.name === "error" ? { name: "IN_USE" } : undefined
-          );
+          // try {
+          //   await api.post("/user/create", data);
+          // } catch (err: any) {
+          //   setApiError(err.response.data);
+          // }
+
+          // return new Promise((resolve) => setTimeout(resolve, 2000)).then(() =>
+          // data.name === "error" ? { name: "IN_USE" } : undefined
+          // );
         }}
       >
         {({ formProps, submitting }) => (
@@ -56,13 +60,7 @@ const FormDefaultExample = () => {
               description="* indicates a required field"
             />
             <FormSection>
-              <Field
-                aria-required={true}
-                name="name"
-                label="Nome"
-                isRequired
-                defaultValue=""
-              >
+              <Field aria-required={true} name="name" label="Nome" isRequired>
                 {({ fieldProps, error }) => (
                   <Fragment>
                     <TextField autoComplete="off" {...fieldProps} />
@@ -76,13 +74,11 @@ const FormDefaultExample = () => {
                         This name is already in use, try another one.
                       </ErrorMessage>
                     )}
-                    {apiError && (
-                      <ErrorMessage>{apiError.message}</ErrorMessage>
-                    )}
+                    {apiError && <ErrorMessage>{"aha"}</ErrorMessage>}
                   </Fragment>
                 )}
               </Field>
-              <Field name="email" label="Email" defaultValue="" isRequired>
+              <Field name="email" label="Email" isRequired>
                 {({ fieldProps, error }) => (
                   <Fragment>
                     <TextField {...fieldProps} />
@@ -97,7 +93,6 @@ const FormDefaultExample = () => {
                 aria-required={true}
                 name="password"
                 label="Password"
-                defaultValue=""
                 isRequired
                 validate={(value) =>
                   value && value.length < 8 ? "TOO_SHORT" : undefined
