@@ -23,8 +23,8 @@ export const createUserSchema = z.object({
 });
 
 export const authenticateUserSchema = z.object({
-  email: z.string(),
-  password: z.string()
+  email: z.string().min(3),
+  password: z.string().min(8)
 });
 
 export const createTicketSchema = z.object({

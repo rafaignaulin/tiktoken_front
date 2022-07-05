@@ -1,4 +1,4 @@
-import { Fragment, useState } from "react";
+import { Fragment } from "react";
 
 import ButtonGroup from "@atlaskit/button/button-group";
 import LoadingButton from "@atlaskit/button/loading-button";
@@ -14,7 +14,7 @@ import Form, {
   HelperMessage,
   ValidMessage
 } from "@atlaskit/form";
-import { api } from "@services/api";
+import { trpc } from "@utils/trpc";
 interface SignUpFormData {
   name: string;
   email: string;
@@ -22,7 +22,13 @@ interface SignUpFormData {
 }
 
 const FormDefaultExample = () => {
-  const [apiError, setApiError] = useState(null);
+  const userMutation = trpc.useMutation("user.authenticate", {
+    onSuccess({ token }) {
+      if (typeof window !== "undefined") {
+        window.localStorage.setItem("token", token);
+      }
+    }
+  });
 
   return (
     <div
@@ -36,18 +42,8 @@ const FormDefaultExample = () => {
     >
       <Form<SignUpFormData>
         onSubmit={async (data) => {
+          userMutation.mutate(data);
           console.log("form data", data);
-          try {
-            const response = await api.authenticateUser(data);
-            console.log(response);
-          } catch (err) {
-            console.log(err.response.data);
-            setApiError(err.response.data);
-          }
-
-          return new Promise((resolve) => setTimeout(resolve, 2000)).then(() =>
-            data.name === "error" ? { name: "IN_USE" } : undefined
-          );
         }}
       >
         {({ formProps, submitting }) => (

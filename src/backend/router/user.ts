@@ -1,15 +1,20 @@
 import { prisma } from "@backend/util/prisma";
-import * as trpc from "@trpc/server";
 import { authenticateUserSchema, createUserSchema } from "@type/schemas";
 import * as hash from "@utils/providers/hash";
 import { sign } from "jsonwebtoken";
 import auth from "../../../config/auth";
+import { createRouter } from "./app";
 
-export const users = trpc
-  .router()
-  .query("authenticate", {
+export const users = createRouter()
+  .middleware(({ ctx, next }) => {
+    console.log(ctx.user);
+
+    return next();
+  })
+  .mutation("authenticate", {
     input: authenticateUserSchema,
-    async resolve({ input }) {
+    async resolve({ input, ctx }) {
+      console.log("****", input, ctx);
       const user = await prisma.user.findFirstOrThrow({
         where: { email: input.email }
       });
