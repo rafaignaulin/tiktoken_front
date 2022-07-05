@@ -102,7 +102,7 @@ export const getStaticPaths: GetStaticPaths = async () => {
 export const getStaticProps: GetStaticProps = async (context) => {
   const { id } = context.params;
 
-  const { event } = await api.get(`/events/${id}`);
+  const { event } = await api.findEventById(id);
 
   const eventData = {
     id: event.id,

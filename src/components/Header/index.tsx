@@ -18,7 +18,7 @@ export function Header({ title, user }: Props) {
       <a href="/home">
         <Image
           className="logo"
-          src="/assets/logo.png"
+          src="/assets/logo.svg"
           alt="logo"
           width="15"
           height="50"

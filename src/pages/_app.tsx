@@ -11,18 +11,21 @@ import { GlobalStyle } from "../styles/globals";
 function MyApp({ Component, pageProps }: AppProps) {
   return (
     <Provider store={store}>
-      <Header title="TikToken" />
 
       <Component {...pageProps} />
       <GlobalStyle />
 
-      <Footer />
     </Provider>
   );
 }
 
 export default withTRPC<AppRouter>({
   config({ ctx }) {
+    const token =
+      typeof window !== "undefined"
+        ? window.localStorage.getItem("token") ?? ""
+        : "";
+
     /**
      * If you want to use SSR, you need to use the server's full URL
      * @link https://trpc.io/docs/ssr
@@ -32,11 +35,10 @@ export default withTRPC<AppRouter>({
       : "http://localhost:3000/api/trpc";
 
     return {
-      url
-      /**
-       * @link https://react-query.tanstack.com/reference/QueryClient
-       */
-      // queryClientConfig: { defaultOptions: { queries: { staleTime: 60 } } },
+      url,
+      headers: {
+        Authorization: token
+      }
     };
   },
   /**
