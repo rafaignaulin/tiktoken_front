@@ -1,119 +1,129 @@
 import { Fragment } from "react";
 
-import ButtonGroup from "@atlaskit/button/button-group";
-import LoadingButton from "@atlaskit/button/loading-button";
-import Button from "@atlaskit/button/standard-button";
 import TextField from "@atlaskit/textfield";
 
+import Button, { ButtonGroup, LoadingButton } from "@atlaskit/button";
 import Form, {
-  ErrorMessage,
   Field,
   FormFooter,
   FormHeader,
-  FormSection,
-  HelperMessage,
-  ValidMessage
+  FormSection
 } from "@atlaskit/form";
 import { trpc } from "@utils/trpc";
-interface SignUpFormData {
-  name: string;
-  email: string;
-  password: string;
-}
+
+
+import { api } from "@services/api";
+import { AuthenticateUser } from "@types";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { useState } from "react";
+import * as S from "./styles";
+
+
 
 const FormDefaultExample = () => {
-  const userMutation = trpc.useMutation("user.authenticate", {
-    onSuccess({ token }) {
-      if (typeof window !== "undefined") {
-        window.localStorage.setItem("token", token);
-      }
+  const [apiError, setApiError] = useState(null);
+  const router = useRouter();
+const userMutation = trpc.useMutation("user.authenticate", {
+  onSuccess({ token }) {
+    if (typeof window !== "undefined") {
+      window.localStorage.setItem("token", token);
     }
-  });
-
+  }
+});
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "400px",
-        maxWidth: "100%",
-        margin: "0 auto",
-        flexDirection: "column"
-      }}
-    >
-      <Form<SignUpFormData>
-        onSubmit={async (data) => {
-          userMutation.mutate(data);
-          console.log("form data", data);
-        }}
-      >
-        {({ formProps, submitting }) => (
-          <form {...formProps}>
-            <FormHeader
-              title="Sign in"
-              description="* indicates a required field"
-            />
-            <FormSection>
-              <Field name="email" label="Email" defaultValue="" isRequired>
-                {({ fieldProps, error }) => (
-                  <Fragment>
-                    <TextField {...fieldProps} />
-                    {!error && (
-                      <HelperMessage>Must contain @ symbol</HelperMessage>
-                    )}
-                    {error && <ErrorMessage>{error}</ErrorMessage>}
-                  </Fragment>
-                )}
-              </Field>
-              <Field
-                aria-required={true}
-                name="password"
-                label="Password"
-                defaultValue=""
-                isRequired
-                validate={(value) =>
-                  value && value.length < 8 ? "TOO_SHORT" : undefined
-                }
-              >
-                {({ fieldProps, error, valid, meta }) => {
-                  return (
-                    <Fragment>
-                      <TextField type="password" {...fieldProps} />
-                      {error && !valid && (
-                        <HelperMessage>
-                          Use 8 or more characters with a mix of letters,
-                          numbers and symbols.
-                        </HelperMessage>
-                      )}
-                      {error && (
-                        <ErrorMessage>
-                          Password needs to be more than 8 characters.
-                        </ErrorMessage>
-                      )}
-                      {valid && meta.dirty ? (
-                        <ValidMessage>Awesome password!</ValidMessage>
-                      ) : null}
-                    </Fragment>
-                  );
-                }}
-              </Field>
-            </FormSection>
+    <S.Container>
+    <S.Content>
+    <S.AnimationContainer>
+      
+    <Image
+          className="logo"
+          src="/assets/logo.svg"
+          alt="logo"
+          width="350"
+          height="100"
+        />
+      <S.FormContainer>
+        <Form<AuthenticateUser>
+          onSubmit={async (data) => {
+            userMutation.mutate(data);
 
-            <FormFooter>
-              <ButtonGroup>
-                <Button appearance="subtle">Cancel</Button>
-                <LoadingButton
-                  type="submit"
-                  appearance="primary"
-                  isLoading={submitting}
-                >
-                  Sign in
-                </LoadingButton>
-              </ButtonGroup>
-            </FormFooter>
-          </form>
-        )}
-      </Form>
-    </div>
+            try {
+              const response = await api.authenticateUser(data);
+
+              router.push('/home')
+            } catch (err) {
+              
+              setApiError(err.response.data);
+            }
+            
+            return new Promise((resolve) => setTimeout(resolve, 2000)).then(() =>
+            data.email === "error" ? { email: "IN_USE" } : undefined
+            );
+          }}
+          >
+          {({ formProps, submitting }) => (
+            <form {...formProps}>
+              <FormHeader
+                title="Faça seu login"
+                description="Bem vindo de volta!"
+                />
+              <FormSection>
+                <Field name="email" label="Email" defaultValue="" isRequired>
+                  {({ fieldProps, error }) => (
+                    <Fragment>
+                      <TextField {...fieldProps} />
+                    </Fragment>
+                  )}
+                </Field>
+                <Field
+                  aria-required={true}
+                  name="password"
+                  label="Senha"
+                  defaultValue=""
+                  isRequired
+                  validate={(value) =>
+                    value && value.length < 8 ? "TOO_SHORT" : undefined
+                  }
+                  >
+                  {({ fieldProps, error, valid, meta }) => {
+                    return (
+                      <Fragment>
+                        <TextField type="password" {...fieldProps} />
+                      </Fragment>
+                    );
+                  }}
+                </Field>
+              </FormSection>
+
+              <FormFooter>
+                <ButtonGroup>
+                <Button appearance="subtle"><Link href='/home'>Cancelar</Link></Button>
+                  <LoadingButton
+                    type="submit"
+                    appearance="primary"
+                    isLoading={submitting}
+                    >
+                    Logar
+                  </LoadingButton>
+                </ButtonGroup>
+              </FormFooter>
+            </form>
+          )}
+        </Form>
+        <span>Não possui uma conta?   - </span>
+        <Link href='/signUp'>Criar conta</Link>
+      </S.FormContainer>
+        </S.AnimationContainer>
+    </S.Content>
+
+        <Image
+        src="/assets/signup_bg.jpg"
+        width="1440"  
+        height="1440"
+        />
+    </S.Container>
   );
 };
 

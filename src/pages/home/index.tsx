@@ -1,9 +1,10 @@
 import Head from "next/head";
-import * as styles from "./styles";
 
 import { api } from "@services/api";
 import AwesomeSlider from "react-awesome-slider";
 import "react-awesome-slider/dist/styles.css";
+import * as styles from "./styles";
+
 
 interface HomeProps {
   events: any[];

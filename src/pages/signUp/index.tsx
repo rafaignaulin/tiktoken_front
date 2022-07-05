@@ -1,8 +1,4 @@
-import { Fragment, useState } from "react";
-
-import ButtonGroup from "@atlaskit/button/button-group";
-import LoadingButton from "@atlaskit/button/loading-button";
-import Button from "@atlaskit/button/standard-button";
+import Button, { ButtonGroup, LoadingButton } from "@atlaskit/button";
 import Form, {
   ErrorMessage,
   Field,
@@ -13,131 +9,155 @@ import Form, {
   ValidMessage
 } from "@atlaskit/form";
 import TextField from "@atlaskit/textfield";
+import { api } from "@services/api";
+import { CreateUser } from "@types";
 import { trpc } from "@utils/trpc";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/router";
+import { Fragment, useState } from "react";
+import * as S from './styles';
 
-interface SignUpFormData {
-  name: string;
-  email: string;
-  password: string;
-}
+
+
 
 const FormDefaultExample = () => {
   const [apiError, setApiError] = useState(null);
+  const router = useRouter();
   const userMutation = trpc.useMutation("user.create");
 
   console.log("*** userMutation", userMutation.status, userMutation.data);
-
   return (
-    <div
-      style={{
-        display: "flex",
-        width: "400px",
-        maxWidth: "100%",
-        margin: "0 auto",
-        flexDirection: "column"
-      }}
-    >
-      <Form<SignUpFormData>
-        onSubmit={async (data) => {
-          console.log("*** data", data);
-          userMutation.mutate(data);
-
-          // try {
-          //   await api.post("/user/create", data);
-          // } catch (err: any) {
-          //   setApiError(err.response.data);
-          // }
-
-          // return new Promise((resolve) => setTimeout(resolve, 2000)).then(() =>
-          // data.name === "error" ? { name: "IN_USE" } : undefined
-          // );
-        }}
-      >
-        {({ formProps, submitting }) => (
-          <form {...formProps}>
-            <FormHeader
-              title="Sign in"
-              description="* indicates a required field"
+    <S.Container>
+    <Image
+    src="/assets/signup_bg.jpg"
+    width="1440"  
+    height="1440"/>
+      <S.Content>
+        <S.AnimationContainer>
+        <S.FormContainer>
+        <Image
+              className="logo"
+              src="/assets/logo.svg"
+              alt="logo"
+              width="350"
+              height="100"
             />
-            <FormSection>
-              <Field aria-required={true} name="name" label="Nome" isRequired>
-                {({ fieldProps, error }) => (
-                  <Fragment>
-                    <TextField autoComplete="off" {...fieldProps} />
-                    {!error && (
-                      <HelperMessage>
-                        You can use letters, numbers and periods.
-                      </HelperMessage>
-                    )}
-                    {error && (
-                      <ErrorMessage>
-                        This name is already in use, try another one.
-                      </ErrorMessage>
-                    )}
-                    {apiError && <ErrorMessage>{"aha"}</ErrorMessage>}
-                  </Fragment>
-                )}
-              </Field>
-              <Field name="email" label="Email" isRequired>
-                {({ fieldProps, error }) => (
-                  <Fragment>
-                    <TextField {...fieldProps} />
-                    {!error && (
-                      <HelperMessage>Must contain @ symbol</HelperMessage>
-                    )}
-                    {error && <ErrorMessage>{error}</ErrorMessage>}
-                  </Fragment>
-                )}
-              </Field>
-              <Field
-                aria-required={true}
-                name="password"
-                label="Password"
-                isRequired
-                validate={(value) =>
-                  value && value.length < 8 ? "TOO_SHORT" : undefined
-                }
-              >
-                {({ fieldProps, error, valid, meta }) => {
-                  return (
-                    <Fragment>
-                      <TextField type="password" {...fieldProps} />
-                      {error && !valid && (
-                        <HelperMessage>
-                          Use 8 or more characters with a mix of letters,
-                          numbers and symbols.
-                        </HelperMessage>
-                      )}
-                      {error && (
-                        <ErrorMessage>
-                          Password needs to be more than 8 characters.
-                        </ErrorMessage>
-                      )}
-                      {valid && meta.dirty ? (
-                        <ValidMessage>Awesome password!</ValidMessage>
-                      ) : null}
-                    </Fragment>
-                  );
-                }}
-              </Field>
-            </FormSection>
 
-            <FormFooter>
-              <ButtonGroup>
-                <Button appearance="subtle">Cancel</Button>
-                <LoadingButton
-                  type="submit"
-                  appearance="primary"
-                  isLoading={submitting}
-                >
-                  Sign up
-                </LoadingButton>
-              </ButtonGroup>
-            </FormFooter>
-          </form>
-        )}
-      </Form>
-    </div>
+          <Form<CreateUser>
+
+            onSubmit={async (data) => {
+              userMutation.mutate(data)
+              try {
+                const response = await api.createUser(data);
+                router.push('/signIn')
+              } catch (err: any) {
+                console.log(err)
+                setApiError(err.response.data);
+              }
+              
+              return new Promise((resolve) => setTimeout(resolve, 2000)).then(() =>
+                data.name === "error" ? { name: "IN_USE" } : undefined
+              );
+            }}
+          >
+            {({ formProps, submitting }) => (
+              <form {...formProps}>
+                <FormHeader
+                  title="  Cadastro"
+                  description="Seja bem vindo!"
+                />
+                <FormSection>
+                  <Field
+                    aria-required={true}
+                    name="name"
+                    label="Nome"
+                    isRequired
+                    defaultValue=""
+                  >
+                    {({ fieldProps, error }) => (
+                      <Fragment>
+                        <TextField autoComplete="off" {...fieldProps} />
+                        {!error && (
+                          <HelperMessage>
+                            Voce pode usar letras.
+                          </HelperMessage>
+                        )}
+                        {error && (
+                          <ErrorMessage>
+                            Este nome já está em uso, utilize outro.
+                          </ErrorMessage>
+                        )}
+                        {apiError && (
+                          <ErrorMessage>{apiError.message}</ErrorMessage>
+                        )}
+                      </Fragment>
+                    )}
+                  </Field>
+                  <Field name="email" label="Email" defaultValue="" isRequired>
+                    {({ fieldProps, error }) => (
+                      <Fragment>
+                        <TextField {...fieldProps} />
+                        {!error && (
+                          <HelperMessage>Precisa conter @</HelperMessage>
+                        )}
+                        {error && <ErrorMessage>{error}</ErrorMessage>}
+                      </Fragment>
+                    )}
+                  </Field>
+                  <Field
+                    aria-required={true}
+                    name="password"
+                    label="Senha"
+                    defaultValue=""
+                    isRequired
+                    validate={(value) =>
+                      value && value.length < 8 ? "TOO_SHORT" : undefined
+                    }
+                  >
+                    {({ fieldProps, error, valid, meta }) => {
+                      return (
+                        <Fragment>
+                          <TextField type="password" {...fieldProps} />
+                          {error && !valid && (
+                            <HelperMessage>
+                              Use 8 ou mais caracteres com uma mistura de letras
+                              numeros e simbolos.
+                            </HelperMessage>
+                          )}
+                          {error && (
+                            <ErrorMessage>
+                              Senha precisa ter mais que 8 caracteres.
+                            </ErrorMessage>
+                          )}
+                          {valid && meta.dirty ? (
+                            <ValidMessage>Ótima senha!</ValidMessage>
+                          ) : null}
+                        </Fragment>
+                      );
+                    }}
+                  </Field>
+                </FormSection>
+
+                <FormFooter>
+                  <ButtonGroup>
+                    <Button appearance="subtle"><Link href='/home'>Cancelar</Link></Button>
+                    <LoadingButton
+                      type="submit"
+                      appearance="primary"
+                      isLoading={submitting}
+                    >
+                      Criar sua conta
+                    </LoadingButton>
+                  </ButtonGroup>
+                </FormFooter>
+              </form>
+            )}
+          </Form>
+        </S.FormContainer>    
+        </S.AnimationContainer>
+      </S.Content>
+    </S.Container>
   );
 };
 
