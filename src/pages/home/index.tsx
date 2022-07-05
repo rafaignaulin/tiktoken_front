@@ -1,37 +1,16 @@
-import EventCard from "@components/EventCard";
 import Head from "next/head";
 import * as styles from "./styles";
 
+import { api } from "@services/api";
 import AwesomeSlider from "react-awesome-slider";
 import "react-awesome-slider/dist/styles.css";
 
-interface Event {
-  id: string;
-  name: string;
-  description: string;
-  local: {
-    city: string;
-    uf: string;
-  };
-  thumbnail: string;
-  eventDate: string;
-  createdAt: string;
-  updatedAt: string;
-}
-
 interface HomeProps {
-  featuredEvents: Event[];
-  allEvents: Event[];
+  events: any[];
 }
 
-const dashboardPage = ({ featuredEvents, allEvents }: HomeProps) => {
-  const user = {
-    name: "Rafael",
-    avatar_url: "/assets/avatars/147142.png"
-  };
-  console.log(featuredEvents);
-  const events = [...featuredEvents, ...allEvents];
-  console.log(events);
+const dashboardPage = ({ events }: HomeProps) => {
+  console.log("*** events", events);
   return (
     <>
       <Head>
@@ -45,37 +24,24 @@ const dashboardPage = ({ featuredEvents, allEvents }: HomeProps) => {
           <title> All Events</title>
           <AwesomeSlider>
             {events.map((event, index) => (
-              <div>
-                <span>{event.id}</span>
-                <span>{event.name}</span>
-                <span>{event.thumbnail}</span>
-                <span>{event.description}</span>
-                <span>
-                  {event.local.city}
-                  {event.local.uf}
-                </span>
-                <span>{event.eventDate}</span>
+              <div key={event.id}>
+                <span>{event.title}</span>
               </div>
             ))}
           </AwesomeSlider>
         </styles.FeaturedEvents>
-        <styles.AllEvents>
-          <ul>
-            {events.map((event, index) => (
-              <EventCard
-                id={event.id}
-                name={event.name}
-                description={event.description}
-                thumbnail={event.thumbnail}
-                local={event.local}
-                eventDate={event.eventDate}
-              />
-            ))}
-          </ul>
-        </styles.AllEvents>
       </styles.Events>
     </>
   );
 };
+
+export async function getServerSideProps(ctx) {
+  const { data } = await api.findAllEvents({});
+  return {
+    props: {
+      events: data[0]
+    }
+  };
+}
 
 export default dashboardPage;

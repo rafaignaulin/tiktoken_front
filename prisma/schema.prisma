@@ -1,0 +1,56 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+  previewFeatures = ["referentialIntegrity"]
+}
+
+datasource db {
+  provider = "mysql"
+  url      = env("DATABASE_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+  referentialIntegrity = "prisma"
+}
+
+model Event {
+  id          String   @id @default(cuid())
+  created_at  DateTime @default(now())
+  updated_at  DateTime @default(now())
+  title       String
+  description String
+  date        DateTime
+  location    String
+  logo        String
+  promoterId  String
+  promoter    User     @relation(fields: [promoterId], references: [id])
+  Ticket      Ticket[]
+}
+
+model User {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  name       String
+  email      String
+  password   String
+  type       UserType
+  Event      Event[]
+}
+
+model Ticket {
+  id         String   @id @default(cuid())
+  created_at DateTime @default(now())
+  updated_at DateTime @default(now())
+  owner      String
+  status     String
+  price      Float
+  eventId    String
+  event      Event    @relation(fields: [eventId], references: [id])
+}
+
+enum UserType {
+  ADMIN
+  PROMOTER
+  USER
+}
