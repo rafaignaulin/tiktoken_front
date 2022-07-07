@@ -12,12 +12,12 @@ import Form, {
 import { trpc } from "@utils/trpc";
 
 import { api } from "@services/api";
+import * as S from "@styles/pages/signIn";
 import { AuthenticateUser } from "@type/schemas";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
-import * as S from "./styles";
 
 const FormDefaultExample = () => {
   const [apiError, setApiError] = useState(null);

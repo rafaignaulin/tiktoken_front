@@ -4,7 +4,7 @@ import Button from "@atlaskit/button";
 import Image from "next/image";
 
 import { ButtonItem, Section } from "@atlaskit/menu";
-import * as styles from "./styles";
+import * as styles from "@styles/pages/user";
 
 const userPage: NextPage = () => (
   // const user = useSelector(state => state.UserReducer)
