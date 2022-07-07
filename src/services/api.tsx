@@ -18,8 +18,27 @@ export const api = {
   findAllEvents: ({ params, body }: { params?: Paginate; body?: any }) =>
     axios.post<SearchEvent[]>(baseUrl + "event/search/", { params, ...body }),
   findEventById: (eventId: string) => axios.get(baseUrl + "event/" + eventId),
-  createEvent: (body: FormCreateEvent) =>
-    axios.post(baseUrl + "event/create", body),
+  createEvent: (body: Partial<FormCreateEvent>, userId: string) =>
+    axios.post(baseUrl + "event", {
+      title: body.title,
+      description: body.description,
+      date: "2022-03-20",
+      location: "web",
+      logo: "df",
+      tickets: [
+        {
+          type: "meia",
+          price: 49.9,
+          quantity: 20
+        },
+        {
+          type: "cheio",
+          price: 100,
+          quantity: 150
+        }
+      ],
+      promoterId: userId
+    }),
   findAllTicketsByEvent: (eventId) => axios.get(baseUrl + "ticket/" + eventId),
   findTicketTypesByEventId: (eventId: string) =>
     axios.get(baseUrl + "ticket/types/" + eventId),
