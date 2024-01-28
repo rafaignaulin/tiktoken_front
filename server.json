@@ -1,0 +1,48 @@
+{
+    "events":[
+    {
+        "id": "1",
+        "name": "Saidera daora no altas - OPEN BAR",
+        "local": {
+            "city": "Chapeco",
+            "uf": "SC"
+        },
+        "description": "Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!",
+        "thumbnail": "/assets/pty.png",
+        "eventDate": "2022-04-04"
+    },
+    {
+        "id": "2",
+        "name": "Saidera daora no altas- OPEN BAR",
+        "description":  "Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!",
+        "local": {
+            "city": "Chapeco",
+            "uf": "SC"
+        },
+        "thumbnail": "/assets/pty_large.png",
+        "eventDate": "2022-04-31"
+    },
+    {
+        "id": "3",
+        "name": "Saidera daora no altas- OPEN BAR",
+        "description": "Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!",
+        "local": {
+            "city": "Chapeco",
+            "uf": "SC"
+        },
+        "thumbnail": "/assets/pty_large.png",
+        "eventDate": "2022-05-23"
+    },
+    {
+        "id": "4",
+        "name": "Saidera daora no altas- OPEN BAR",
+        "description": "Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!",
+        "local": {
+            "city": "Chapeco",
+            "uf": "SC"
+        },
+        "thumbnail": "/assets/pty.png",
+        "eventDate": "2022-06-07"
+    }
+    ]
+}

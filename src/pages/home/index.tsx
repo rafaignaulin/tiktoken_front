@@ -1,66 +1,27 @@
-import type { NextPage } from 'next';
+import type { GetStaticProps, NextPage } from 'next';
 import Link from 'next/link';
 
 import { Event } from '@dtos/IEventDTO';
 
 import * as styles from './styles';
 import Head from 'next/head';
+import { api } from '@api/index';
 
-export const events:Event[] = [{
-    id: '1',
-    name: 'Saidera daora no altas - OPEN BAR',
-    local: {
-        city: 'Chapeco',
-        uf: 'SC'
-    },
-    description: 'Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!',
-    thumbnail: '/assets/pty.png',
-    eventDate: '2022-04-04'
-},
-{
-    id: '1',
-    name: 'Saidera daora no altas- OPEN BAR',
-    description:  'Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!',
-    local: {
-        city: 'Chapeco',
-        uf: 'SC'
-    },
-    thumbnail: '/assets/pty_large.png',
-    eventDate: '2022-04-31'
-},
-{
-    id: '1',
-    name: 'Saidera daora no altas- OPEN BAR',
-    description: 'Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!',
-    local: {
-        city: 'Chapeco',
-        uf: 'SC'
-    },
-    thumbnail: '/assets/pty_large.png',
-    eventDate: '2022-05-23'
-},
-{
-    id: '1',
-    name: 'Saidera daora no altas- OPEN BAR',
-    description: 'Bela noite para dar uma volta na frente de um dos pontos mais belos de Chapecó, o famoso Altas!',
-    local: {
-        city: 'Chapeco',
-        uf: 'SC'
-    },
-    thumbnail: '/assets/pty.png',
-    eventDate: '2022-06-07'
-},
-];
 
-const dashboardPage: NextPage = () => {
+type EventProps = {
+    featuredEvents: Event[],
+    allEvents: Event[]
+}
+
+const dashboardPage: NextPage = ( children, {featuredEvents, allEvents}:EventProps) => {
     const user = { 
         name: 'Rafael',
         avatar_url: '/assets/avatars/147142.png'
     }
 
-    
     return (
         <>
+        <p>{allEvents}</p>
             <Head>
                 <title>Home | Tiktoken</title>
             </Head>
@@ -70,7 +31,7 @@ const dashboardPage: NextPage = () => {
 
                 <styles.TrendingEvents>
                     <ul>
-                    {events.map((event, index) => {
+                    {allEvents.map((event, index) => {
                         return (
                             <li key={event.id}>
 
@@ -102,4 +63,34 @@ const dashboardPage: NextPage = () => {
 )
 
 }
+
+
+export const getStaticProps: GetStaticProps = async () => {
+    const { data } = await api.get('events');
+  
+    const events = data.map((event:Event) => {
+      return {
+        id: event.id,
+        name: event.name,
+        thumbnail: event.thumbnail,
+        local_city: event.local.city,
+        local_uf: event.local.uf,
+        description: event.description,
+        eventDate: event.eventDate
+      };
+    })
+  
+    const featuredEvents = events.slice(0, 2);
+    const allEvents = events.slice(2, events.length);
+
+
+    return {
+      props:  {
+        featuredEvents,
+        allEvents,
+      },
+      revalidate: 60 * 60 * 8, 
+    }
+  }
+
 export default dashboardPage
